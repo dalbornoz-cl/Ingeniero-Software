@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top left, #1f2937, #0f172a);
+  color: #fff;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.intro {
+  text-align: center;
+  margin-top: 40px;
+  animation: fadeIn 1.5s ease;
+}
+.intro h2 { color: #60a5fa; }
+.intro p { max-width: 600px; margin: 10px auto; color: #d1d5db; }
+
+.skills { margin-top: 15px; }
+.skills span {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: 4px;
+  display: inline-block;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 850px;
+  text-align: center;
+  margin: 40px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.pdf-viewer {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 75vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.pdf-viewer iframe { width: 100%; height: 100%; border: none; }
+
+.socials {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.socials a {
+  color: #93c5fd;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.socials a:hover { color: #2563eb; }
+
+.download-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 25px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease;
+}
+.download-btn:hover { transform: scale(1.08); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
