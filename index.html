@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diego Albornoz | iOS Liquid Glass</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> 
+
+  <link rel="stylesheet" href="style.css">
+
+
+<style>   
+.img-zoom{
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 25px 50px rgba(0,0,0,.35);
+}
+
+/* Imagen ocupa todo el contenedor */
+.img-zoom img{
+  width: 120%;
+  height: 120%;
+  object-fit: cover;        /* mantiene proporción */
+  display: block;
+  transition: transform .7s cubic-bezier(.4,0,.2,1);
+}
+
+/* Zoom */
+.img-zoom:hover img{
+  transform: scale(1.25);
+}
+
+
+
+
+  /* BOTÓN INFERIOR IZQUIERDA */
+.liquid-btn-left{
+  position:fixed;
+  bottom:25px;
+  left:25px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(30px) saturate(180%);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  color:white;
+  cursor:pointer;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,.5),
+    0 18px 40px rgba(0,0,0,.45);
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.liquid-btn-left:hover{
+  transform:scale(1.15) rotate(-6deg);
+}
+
+/* FONDO MODAL */
+.glass-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+}
+
+.glass-modal.active{
+  display:flex;
+}
+
+/* VENTANA DE VIDRIO */
+.glass-window{
+  position:relative;
+  padding:20px;
+  border-radius:28px;
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(35px) saturate(180%);
+  -webkit-backdrop-filter:blur(35px) saturate(180%);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.5),
+    0 30px 70px rgba(0,0,0,.55);
+  animation:glassPop .35s ease;
+}
+
+.glass-img{
+  width:100%;
+  max-width:420px;
+  border-radius:18px;
+  display:block;
+}
+
+.glass-close{
+  position:absolute;
+  top:10px;
+  right:14px;
+  font-size:26px;
+  cursor:pointer;
+  color:white;
+}
+
+@keyframes glassPop{
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+  .liquid-btn-left{
+    position:fixed;
+    bottom:25px;     /* 👈 abajo */
+    left:25px;       /* 👈 izquierda */
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:rgba(255,255,255,.25);
+    backdrop-filter:blur(30px) saturate(180%);
+    -webkit-backdrop-filter:blur(30px) saturate(180%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    color:white;
+    cursor:pointer;
+    box-shadow:
+      inset 0 2px 6px rgba(255,255,255,.5),
+      0 18px 40px rgba(0,0,0,.45);
+    transition:.3s ease;
+    z-index:9999;
+  }
+  
+  .liquid-btn-left:hover{
+    transform:scale(1.15) rotate(-6deg);
+  }
+  
+
+/* NUBE CÓMIC GLASS */
+.comic-preview{
+  position:absolute;
+  bottom:70px;
+  left:0;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  padding:14px;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.5),
+    0 18px 40px rgba(0,0,0,.35);
+  display:none;
+  animation:pop .2s ease;
+}
+
+/* Pico de la nube (glass también) */
+.comic-preview::after{
+  content:"";
+  position:absolute;
+  bottom:-12px;
+  left:22px;
+  border-width:12px 12px 0 12px;
+  border-style:solid;
+  border-color:rgba(255,255,255,.25) transparent transparent transparent;
+}
+
+/* Imagen */
+.comic-preview img{
+  width:180px;
+  border-radius:16px;
+  display:block;
+}
+
+
+
+  .avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  overflow:hidden;
+  margin:0 auto 12px;
+  background:linear-gradient(135deg,#ffffff,#c7eaff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,.6),
+    0 12px 25px rgba(0,0,0,.35);
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;       /* Recorta sin deformar */
+  object-position:center;/* Centra la cara */
+  border-radius:50%;
+}
+
+
+  /* TOOLTIP */
+.dock a{
+  position:relative;
+}
+
+.dock a::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  bottom:110%;
+  left:50%;
+  transform:translateX(-50%) scale(.9);
+  background:rgba(0,0,0,0.75);
+  color:white;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:8px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s ease;
+}
+
+.dock a:hover::after{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
+
+  .dock-img img{
+  width:32px;
+  height:32px;
+  object-fit:contain;
+}
+
+.dock a{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(20px);
+  transition:.35s cubic-bezier(.4,0,.2,1);
+}
+
+.dock a:hover{
+  transform:scale(1.35) translateY(-8px);
+  box-shadow:0 15px 35px rgba(255,255,255,.6);
+}
+
+/* Glow especial UTFSM */
+.utfsm:hover{
+  box-shadow:0 0 30px rgba(255,215,0,.9);
+}
+
+/* Glow avatar */
+.me:hover{
+  box-shadow:0 0 30px rgba(0,200,255,.8);
+}
+
+  /*Estilos generales del boton whatsapp*/
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  animation: breathe 2s ease-in-out infinite;
+}
+
+/*Estilos solo al icono whatsapp*/
+.whatsapp-btn i {
+  color: #fff;
+  font-size: 24px;
+  animation: beat 2s ease-in-out infinite;
+  text-decoration: none;
+}
+
+/*Estilos con animation contorno respirando*/
+@keyframes breathe {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+/*Estilos de animacion del icono latiendo*/
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+:root{
+  --glass: rgba(255,255,255,.18);
+  --border: rgba(255,255,255,.35);
+} 
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.35)
+    ),
+    url("./resources/11.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  overflow:hidden;
+}
+bodydele{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#5bc0eb,#3a86ff,#4361ee);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  overflow:hidden;
+}
+body::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(255,255,255,.45),transparent 40%),
+    radial-gradient(circle at 70% 70%,rgba(0,180,216,.45),transparent 45%);
+  filter:blur(90px);
+}
+
+.container{
+  margin-top:100px;
+
+  position:relative;
+  z-index:1;
+  width:420px;
+  padding:28px 22px 110px;
+}
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(25px) saturate(180%);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 30px 70px rgba(0,0,0,.5);
+}
+.header{
+  padding:18px;
+  text-align:center;
+}
+
+h1{margin:6px 0 0;font-size:1.5rem;}
+h2{margin:6px 0;font-size:.9rem;font-weight:400;opacity:.85}
+.clock{
+  font-size:2.4rem;
+  font-weight:600;
+  letter-spacing:2px;
+  margin-top:10px;
+}
+.weather {
+  position: fixed;
+  top: 20px;        /* separación desde arriba */
+  left: 20px;       /* separación desde la izquierda */
+  z-index: 1000;
+
+  /* Tamaño y estilo glass */
+  padding: 14px 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+.weather-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.weather-temp{
+  font-size:2rem;
+  font-weight:600;
+}
+.weather-desc{font-size:.9rem;opacity:.9}
+/* Dock */
+.dock{
+  position:fixed;
+  bottom:36px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:18px;
+  padding:26px 34px;
+  border-radius:999px;
+  background:var(--glass);
+  backdrop-filter:blur(25px) saturate(180%);
+  border:1px solid var(--border);
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+.dock a{
+  width:66px;height:66px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#000;
+  font-size:1.4rem;
+  text-decoration:none;
+  transition:.3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:inset 0 2px 6px rgba(255,255,255,.6),0 10px 25px rgba(0,0,0,.4);
+}
+.dock a:hover{
+  transform:translateY(-12px) scale(1.35);
+}
+.instagram{background:radial-gradient(circle at 30% 110%,#fdf497,#fd5949,#d6249f,#285AEB);}
+.linkedin{background:linear-gradient(135deg,#0a66c2,#38bdf8);}
+.github{background:linear-gradient(135deg,#fff,#dbeafe);} 
+
+
+.dock{
+  position:fixed;
+  top:50%;
+  left:20px;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;   /* 👈 ahora vertical */
+  gap:16px;
+  padding:18px 14px;
+  background:rgba(255,255,255,0.22);
+  backdrop-filter:blur(40px) saturate(160%);
+  -webkit-backdrop-filter:blur(40px) saturate(160%);
+  border-radius:32px;
+  box-shadow:0 25px 50px rgba(0,0,0,.25);
+  z-index:999;
+}
+
+@media(max-width:768px){
+  .dock{
+    flex-direction:row;
+    bottom:20px;
+    top:auto;
+    left:50%;
+    transform:translateX(-50%);
+  }
+}
+
+/* Base botones */
+.dock a{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:24px;
+  transition:.35s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+
+/* Botones con imagen */
+.dock-img img{
+  width:32px;
+  height:32px;
+  object-fit:contain;
+}
+
+/* Avatar más grande */
+.avatar img{
+  width:36px;
+  height:36px;
+}
+
+/* Colores base */
+.instagram{ background:#E1306C; }
+.linkedin{ background:#0A66C2; }
+.github{ background:#111; }
+
+.utfsm{
+  background:rgba(255,255,255,.35);
+}
+
+/* ✨ Hover tipo iOS / Bumble */
+.dock a:hover{
+  transform:scale(1.35) translateY(-8px);
+  box-shadow:0 15px 35px rgba(255,255,255,.6);
+}
+
+/* Glow especial UTFSM */
+.utfsm:hover{
+  box-shadow:0 0 30px rgba(255,215,0,.9);
+} 
+
+/* NAVBAR BASE */
+.navbar-glass{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:1100px;
+  height:64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 24px;
+  background:rgba(255,255,255,0.22);
+
+  backdrop-filter:blur(28px) saturate(160%);
+  -webkit-backdrop-filter:blur(28px) saturate(160%);
+
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.35);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.4),
+    0 20px 40px rgba(0,0,0,.2);
+
+  transition:all .35s ease;
+  z-index:1000;
+}
+
+/* Estado con scroll */
+.navbar-glass.scrolled{
+  backdrop-filter:blur(45px) saturate(180%);
+  -webkit-backdrop-filter:blur(45px) saturate(180%);
+  background:rgba(255,255,255,0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.6),
+    0 30px 60px rgba(0,0,0,.35);
+}
+
+/* LOGO */
+.logo{
+  font-weight:600;
+  font-size:20px;
+  color:white;
+}
+
+/* LINKS */
+.nav-center{
+  display:flex;
+  gap:24px;
+  list-style:none;
+}
+
+.nav-center a{
+  color:white;
+  text-decoration:none;
+  font-size:15px;
+  opacity:.85;
+  transition:.3s;
+}
+
+.nav-center a:hover{ opacity:1; }
+
+/* SWITCH iOS */
+.theme-switch{
+  position:relative;
+  width:48px;
+  height:26px;
+}
+
+.theme-switch input{
+  display:none;
+}
+
+.theme-switch label{
+  width:100%;
+  height:100%;
+  background:rgba(255,255,255,.45);
+  border-radius:20px;
+  display:block;
+  cursor:pointer;
+  position:relative;
+  transition:.3s;
+}
+
+.theme-switch label::after{
+  content:"";
+  width:20px;
+  height:20px;
+  background:white;
+  position:absolute;
+  top:3px;
+  left:3px;
+  border-radius:50%;
+  transition:.3s;
+}
+
+.theme-switch input:checked + label{
+  background:#0A84FF;
+}
+
+.theme-switch input:checked + label::after{
+  transform:translateX(22px);
+}
+
+/* LIGHT MODE */
+body.light{
+  color:#111;
+}
+
+body.light .navbar-glass{
+  background:rgba(255,255,255,0.55);
+}
+
+.navbar-glass a,
+.navbar-glass button{
+  position:relative;
+  padding:8px 16px;
+  border-radius:14px;
+  color:white;
+  text-decoration:none;
+  background:transparent;
+  transition:all .35s ease;
+}
+
+/* Hover */
+.navbar-glass a:hover,
+.navbar-glass button:hover{
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.4),
+    0 10px 25px rgba(0,0,0,.25);
+}
+
+/* BOTÓN FLOTANTE */
+.float-btn{
+  position:fixed;
+  bottom:90px;
+  right:25px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(25px) saturate(160%);
+  -webkit-backdrop-filter:blur(25px) saturate(160%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:white;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.float-btn:hover{
+  transform:scale(1.15);
+}
+
+/* MODAL */
+.glass-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+}
+
+.glass-modal.active{
+  display:flex;
+}
+
+.modal-content{
+  position:relative;
+  padding:20px;
+  border-radius:24px;
+  max-width:90%;
+  max-height:90%;
+  animation:pop .3s ease;
+}
+
+.modal-img{
+  width:100%;
+  max-width:420px;
+  border-radius:16px;
+  display:block;
+}
+
+.close-modal{
+  position:absolute;
+  top:10px;
+  right:14px;
+  font-size:26px;
+  cursor:pointer;
+  color:white;
+}
+
+@keyframes pop{
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.liquid-btn{
+  position:fixed;
+  top:25px;        /* 👈 ahora arriba */
+  right:25px;      /* 👈 esquina derecha */
+  bottom:auto;     /* anulamos el bottom */
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(30px) saturate(180%);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  color:white;
+  cursor:pointer;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,.5),
+    0 18px 40px rgba(0,0,0,.45);
+  transition:.3s ease;
+  z-index:9999;
+}
+
+
+.liquid-btn:hover{
+  transform:scale(1.15) rotate(6deg);
+}
+
+/* FONDO DEL MODAL */
+.glass-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+}
+
+.glass-modal.active{
+  display:flex;
+}
+
+/* VENTANA DE VIDRIO */
+.glass-window{
+  position:relative;
+  padding:20px;
+  border-radius:28px;
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(35px) saturate(180%);
+  -webkit-backdrop-filter:blur(35px) saturate(180%);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.5),
+    0 30px 70px rgba(0,0,0,.55);
+  animation:glassPop .35s ease;
+}
+
+.glass-img{
+  width:100%;
+  max-width:420px;
+  border-radius:18px;
+  display:block;
+}
+
+.glass-close{
+  position:absolute;
+  top:10px;
+  right:14px;
+  font-size:26px;
+  cursor:pointer;
+  color:white;
+}
+
+@keyframes glassPop{
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* DOCK FIJO LATERAL IZQUIERDO */
+.dock{
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;     /* vertical */
+  gap: 16px;
+  padding: 18px 14px;
+  border-radius: 32px;
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  box-shadow: 0 25px 50px rgba(0,0,0,.25);
+  z-index: 9999;
+}
+
+
+@media(max-width:768px){
+  .dock{
+    flex-direction: row;
+    top: auto;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+</style>
+</head>
+<body> 
+<nav class="navbar-glass" id="navbar">
+  <div class="nav-left">
+     <div class="clock" id="clock">--:--:--</div>
+    
+  </div>
+
+  <ul class="nav-center">
+    <li><a href="#">🏠</a></li>
+    <li><a href="/pages/index.html">Ver mí CV</a></li>
+    <li><a href="https://www.softechti.cl/">Softech.cl - MyPyme</a></li>
+    <li><a href="/page2/index.html">Mis Certificaciones</a></li>
+  </ul>
+
+  <div class="nav-right">
+     
+    <div class="weather-row">
+      <div>
+        <div class="weather-desc">Clima · Santiago</div>
+        <div class="weather-temp" id="temp">--°C</div> 
+        
+      </div>
+      <i class="fas fa-cloud-sun fa-2x"></i>
+    </div>
+  </div>
+ 
+</nav>
+ 
+ 
+ 
+
+<div class="container"> 
+
+
+
+   
+  <div class="glass header"> 
+        <div class="img-zoom">
+ 
+
+  <img src="credUSM.png" >
+
+  </div>
+  
+  
+    <h1>Diego Albornoz</h1>
+    <h2>Ingeniero Informático · Santiago de Chile</h2> 
+<p>⚙️Profesional en tecnologías de la información con formación en desarrollo de sistemas informáticos, incluyendo análisis, diseño, programación, pruebas, implementación y mantenimiento de software. Experiencia en administración de bases de datos, soporte técnico y sistemas computacionales, utilizando diversos lenguajes de programación y tecnologías.</p>    
+  </div> 
+
+
+
+
+</div>  
+
+
+
+<div class="dock">
+  <a class="dock-img utfsm" href="https://repositorio.usm.cl/entities/tesis/7b63e1e1-f2b9-40a1-864c-73fa390df53e" target="_blank" data-tooltip="Memoria USM">
+    <img src="Logo_UTFSM.png" alt="UTFSM">
+  </a>
+
+  <a class="dock-img me" href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/tmp/DOCUMENTOS/DOCUMENTACION_ACADEMICA.zip" data-tooltip="Descargar Certificados">
+    <img src="aca.png" alt="Diego">
+  </a>
+
+   <a class="dock-img me" href="https://www.instagram.com/dalbornoz1?igsh=MTV6MGIxaTluZjV1OA==" data-tooltip="@dalbornoz1">
+    <img src="igg2.png" alt="Diego">
+  </a>
+
+ <a class="dock-img me" href="https://www.linkedin.com/in/dalbornoz-developer/" data-tooltip="LinkedIn">
+    <img src="in.png" alt="Diego">
+  </a>
+
+ <a class="dock-img me" href="https://api.whatsapp.com/send?phone=56933169603&text=Hola%21%20Diego" data-tooltip="WhatsApp">
+    <img src="w4.png" alt="Diego">
+  </a> 
+
+   <a class="dock-img me" href="www.gmail.com" data-tooltip="Email">
+    <img src="gmail.png" alt="Diego">
+  </a>
+
+  <a class="github" href="https://github.com/dalbornoz-cl" data-tooltip="GitHub">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+
+<a href="https://api.whatsapp.com/send?phone=56933169603&text=Hola%21%20Diego" target="_blank" class="whatsapp-btn">
+  <i class="bi bi-whatsapp"></i>
+</a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
+
+<script>
+function updateClock(){
+  const now=new Date().toLocaleTimeString("es-CL",{hour12:false,timeZone:"America/Santiago"});
+  document.getElementById("clock").innerText=now;
+}
+setInterval(updateClock,1000);updateClock();
+
+fetch("https://api.open-meteo.com/v1/forecast?latitude=-33.45&longitude=-70.66&current_weather=true")
+.then(r=>r.json())
+.then(d=>{
+  document.getElementById("temp").innerText=Math.round(d.current_weather.temperature)+"°C";
+});
+</script> 
+<script src="script.js"> 
+
+// Scroll blur effect
+const navbar = document.getElementById("navbar");
+
+window.addEventListener("scroll", () => {
+  navbar.classList.toggle("scrolled", window.scrollY > 10);
+});
+
+// Theme toggle
+const toggle = document.getElementById("themeToggle");
+
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("light", toggle.checked);
+});
+
+
+</script>  
+
+
+
+<div class="liquid-btn-left" id="openLeftModal">
+  <img src="call.png" alt="Diego" width="100">
+</div>
+
+<!-- MODAL GLASS -->
+<div class="glass-modal" id="leftModal">
+  <div class="glass-window">
+    <span class="glass-close" id="closeLeftModal">&times;</span>
+    <img src="qr.png" alt="Imagen modal" class="glass-img">qr.png
+  </div>
+</div>
+
+
+<!-- BOTÓN FLOTANTE -->
+<div class="liquid-btn" id="openGlassModal">
+   <img src="aca.png" alt="Diego" width="100">
+</div>
+
+<!-- MODAL GLASS -->
+<div class="glass-modal" id="glassModal">
+  <div class="glass-window">
+    <span class="glass-close" id="closeGlassModal">&times;</span>
+    <img src="gradua.jpg" alt="Imagen modal" class="glass-img">
+  </div>
+</div>
+
+
+  
+
+<script>
+const openBtn = document.getElementById("openGlassModal");
+const modal = document.getElementById("glassModal");
+const closeBtn = document.getElementById("closeGlassModal");
+
+openBtn.addEventListener("click", () => {
+  modal.classList.add("active");
+});
+
+closeBtn.addEventListener("click", () => {
+  modal.classList.remove("active");
+});
+
+modal.addEventListener("click", (e) => {
+  if(e.target === modal){
+    modal.classList.remove("active");
+  }
+});
+</script>
+
+<script>
+  const openLeftBtn = document.getElementById("openLeftModal");
+  const leftModal = document.getElementById("leftModal");
+  const closeLeftBtn = document.getElementById("closeLeftModal");
+  
+  openLeftBtn.addEventListener("click", () => {
+    leftModal.classList.add("active");
+  });
+  
+  closeLeftBtn.addEventListener("click", () => {
+    leftModal.classList.remove("active");
+  });
+  
+  leftModal.addEventListener("click", (e) => {
+    if(e.target === leftModal){
+      leftModal.classList.remove("active");
+    }
+  });
+  </script>
+    
+
+</body>  
+
+
+
+</html>
