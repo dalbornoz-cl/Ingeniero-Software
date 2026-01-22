@@ -10,7 +10,7 @@
 
 
 <style>   
-./* CONTENEDOR RESPONSIVE DE LA CREDENCIAL */
+/* CONTENEDOR RESPONSIVE DE LA CREDENCIAL */
 .img-zoom{
   width:100%;
   max-width:100%;
@@ -270,7 +270,7 @@
   }
 }
 
-/*Estilos de animacion del icono latiendo*/
+/**/
 @keyframes beat {
   0% {
     transform: scale(1);
@@ -285,7 +285,10 @@
 :root{
   --glass: rgba(255,255,255,.18);
   --border: rgba(255,255,255,.35);
-} 
+}  
+
+
+
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -305,17 +308,7 @@ body{
   color:#fff;
   overflow:hidden;
 }
-bodydele{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(135deg,#5bc0eb,#3a86ff,#4361ee);
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#fff;
-  overflow:hidden;
-}
+
 body::before{
   content:"";
   position:absolute;
@@ -776,7 +769,7 @@ body.light .navbar-glass{
 
 /* ===== EXTRA SMALL DEVICES ≤360px ===== */
 @media(max-width:360px){
-  body{ overflow-x:hidden; }
+
 
   .navbar-glass{
     width:94%;
@@ -931,7 +924,373 @@ body.light .navbar-glass{
   }
 }
 
+
+
+
+/* Hover desktop */
+.apps-fab:hover{
+  transform:scale(1.12);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,0.75),
+    0 28px 60px rgba(0,0,0,0.55);
+}
+
+/* Tap mobile */
+.apps-fab:active{
+  transform:scale(0.96);
+}
+
+/* Icono dentro */
+.apps-fab i{
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+}
+
+
+/* ZOOM IN INICIAL */
+@keyframes fabZoomIn{
+  from{transform:scale(0);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* FEEDBACK HOVER / TAP */
+.apps-fab:hover{
+  transform:scale(1.15);
+}
+
+/* MODAL */
+.apps-modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:flex-end;
+  justify-content:flex-start;
+  padding:20px;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);
+  z-index:10000;
+}
+
+.apps-modal.active{display:flex}
+
+/* CONTENEDOR GLASS (nace desde botón) */
+.apps-glass{
+  width:280px;
+  padding:18px;
+  border-radius:26px;
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(35px) saturate(180%);
+  -webkit-backdrop-filter:blur(35px) saturate(180%);
+  transform-origin:bottom left;
+  animation:popFromFab .35s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes popFromFab{
+  from{transform:scale(.4);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* GRID DE ICONOS */
+.apps-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.apps-grid a{
+  text-align:center;
+  color:white;
+  text-decoration:none;
+  font-size:.75rem;
+}
+
+.apps-grid img,
+.apps-grid i{
+  width:40px;
+  height:40px;
+  margin-bottom:6px;
+}
+
+/* MOBILE */
+@media(max-width:480px){
+  .apps-grid{grid-template-columns:repeat(2,1fr)}
+} 
+
+* {
+  box-sizing: border-box;
+}
+
+/*
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  background:
+    linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.25)),
+    url("./resources/11.jpg") center / cover no-repeat;
+}
+
+*/
+
+
+
+
+
+
+
+
+/* ======================================================
+   BOTÓN FLOTANTE APPS (SIEMPRE PRESENTE)
+====================================================== */
+.apps-fab {
+  position: fixed;
+  bottom: 22px;
+  left: 22px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,.22);
+  backdrop-filter: blur(36px) saturate(190%);
+  -webkit-backdrop-filter: blur(36px) saturate(190%);
+  border: 1px solid rgba(255,255,255,.35);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    0 24px 50px rgba(0,0,0,.5);
+
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+
+  animation: fabIn .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ================================
+   NAVBAR iOS COMPACT ON SCROLL
+================================ */
+
+/* Estado compacto */
+.navbar-glass-v2.compact{
+  height:52px;
+  padding:0 16px;
+  border-radius:18px;
+
+  backdrop-filter:blur(40px) saturate(190%);
+  -webkit-backdrop-filter:blur(40px) saturate(190%);
+
+  background:rgba(255,255,255,.32);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.65),
+    0 14px 35px rgba(0,0,0,.35);
+}
+
+/* Logo reduce tamaño */
+.navbar-glass-v2.compact .logo-v2{
+  font-size:15px;
+  opacity:.95;
+}
+
+/* Links compactos desktop */
+@media(min-width:769px){
+  .navbar-glass-v2.compact .nav-menu-v2 a{
+    font-size:14px;
+    padding:6px 10px;
+  }
+}
+
+/* Botón menú más pequeño mobile */
+.navbar-glass-v2.compact .menu-btn-v2{
+  width:38px;
+  height:38px;
+  font-size:16px;
+}
+
+
+/* ================================
+   FLOATING SOCIAL FAB (ALWAYS ON)
+================================ */
+
+.apps-fab{
+  position:fixed !important;
+  bottom:22px;
+  left:22px;
+  z-index:9999;
+
+  width:68px;
+  height:68px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(36px) saturate(190%);
+  -webkit-backdrop-filter:blur(36px) saturate(190%);
+  border:1px solid rgba(255,255,255,.35);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    0 24px 50px rgba(0,0,0,.5);
+
+  color:white;
+  font-size:26px;
+  cursor:pointer;
+
+  animation:fabIn .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* Hover desktop */
+.apps-fab:hover{
+  transform:scale(1.12);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,.75),
+    0 28px 60px rgba(0,0,0,.55);
+}
+
+/* Tap mobile */
+.apps-fab:active{
+  transform:scale(.96);
+}
+
+/* Animación entrada */
+@keyframes fabIn{
+  from{transform:scale(0);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* Ajuste mobile */
+@media(max-width:768px){
+  .apps-fab{
+    bottom:16px;
+    left:16px;
+    width:60px;
+    height:60px;
+    font-size:22px;
+  }
+}
+.apps-fab{
+  pointer-events:auto;
+}
+/* ================================
+   IMAGE FAB FOR SOCIAL APPS
+================================ */
+
+.liquid-btn.bottom-center-btn{
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:9999;
+
+  width:68px;
+  height:68px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(32px) saturate(180%);
+  -webkit-backdrop-filter:blur(32px) saturate(180%);
+  border:1px solid rgba(255,255,255,.35);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    0 24px 50px rgba(0,0,0,.5);
+
+  cursor:pointer;
+}
+
+/* Imagen dentro */
+.liquid-btn.bottom-center-btn img{
+  width:42px;
+  height:42px;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+/* Hover desktop */
+.liquid-btn.bottom-center-btn:hover{
+  transform:translateX(-50%) scale(1.12);
+}
+
+/* Tap mobile */
+.liquid-btn.bottom-center-btn:active{
+  transform:translateX(-50%) scale(.96);
+}
+/* ================================
+   CENTERED APPS MODAL (OVERRIDE)
+================================ */
+
+/* Modal ocupa toda la pantalla */
+.apps-modal{
+  position:fixed;
+  inset:0;
+  display:none;
+
+  align-items:center;        /* 👈 CENTRADO VERTICAL */
+  justify-content:center;    /* 👈 CENTRADO HORIZONTAL */
+
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  z-index:10000;
+}
+
+/* Activo */
+.apps-modal.active{
+  display:flex;
+}
+
+/* Contenedor glass centrado */
+.apps-glass{
+  width:300px;
+  padding:20px;
+  border-radius:28px;
+
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(35px) saturate(180%);
+  -webkit-backdrop-filter:blur(35px) saturate(180%);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    0 30px 70px rgba(0,0,0,.55);
+
+  animation:appsCenterPop .35s cubic-bezier(.4,0,.2,1);
+}
+
+/* Animación iOS */
+@keyframes appsCenterPop{
+  from{
+    transform:scale(.85);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+.apps-glass{
+  transform-origin:center;
+}
+
+
 </style> 
+
+</head>
+<body> 
 <nav class="navbar-glass" id="navbar">
   <div class="nav-left"><div class="nav-toggle" id="navToggle">☰</div>
 
@@ -939,107 +1298,109 @@ body.light .navbar-glass{
  
 
   <ul class="nav-center">
-  
-    <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/VerCurriculum.pdf">Ver CV</a></li>
-    <li><a href="https://www.softechti.cl/">Softech-MyPyme</a></li>
-    <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/DocAcademicosOnly.pdf">Doc.Academicos</a></li>
+    <li><a href="#">🏠</a></li>
+    <li><a href="/pages/index.html">Ver mí CV</a></li>
+    <li><a href="https://www.softechti.cl/">Softech.cl - MyPyme</a></li>
+    <li><a href="/page2/index.html">Mis Certificaciones</a></li>
   </ul>
  
 
   
-<div class="liquid-btn bottom-center-btn" id="openGlassModal">
-
-
-    <img src="aca.png" alt="Diego" width="100">
-  </div>
 
  
 </nav>
-</head>
-<body> 
 
- 
- 
-  <br>
-  <br>
-  <br>
-  
-  
+
+
 <div class="container"> 
  
  
 
+
   <div class="glass header">  
-    
+   
         <div class="img-zoom">
  
 
   <img src="credUSM.png" >
 
   </div> 
-  <br>
 
-  
     <h1>Diego Albornoz</h1>
-    <h2>Ingeniero Informático · Santiago de Chile</h2> 
-<p>⚙️Profesional en tecnologías de la información con formación en desarrollo de sistemas informáticos, incluyendo análisis, diseño, programación, pruebas, implementación y mantenimiento de software. Experiencia en administración de bases de datos, soporte técnico y sistemas computacionales, utilizando diversos lenguajes de programación y tecnologías.</p>    
+    <h2>Ingeniero Informático </h2> 
+<p>⚙️Profesional en tecnologías de la información con formación en desarrollo de sistemas informáticos, incluyendo análisis, diseño, programación, pruebas, implementación y mantenimiento de software. Experiencia en administración de bases de datos ,utilizando diversos lenguajes de programación y tecnologías.</p>    
 <div class="clock" id="clock">--:--:--</div>
 <div>
   <div class="weather-desc">Clima · Santiago</div>
   <div class="weather-temp" id="temp">--°C</div> 
   <i class="fas fa-cloud-sun fa-2x"></i>
-</div> 
-<div class="liquid-btn-left"  id="openLeftModal">
-  <img src="call.png" alt="Diego" width="70"> 
- 
 </div>   
+ <div class="bottom-space"> 
 
+    <div class="liquid-btn-left" id="appsFab"> 
+      
+        <br>
+  <img src="aca.png" alt="Diego" width="80" >  
 
- 
+  <h1>📲</h1>
+</div>  
 
+ </div> 
 
+</div>  
+<!-- MODAL APPS -->
+<div class="apps-modal" id="appsModal">
+  <div class="apps-glass">
+    <div class="apps-grid">
+      <a href="https://www.linkedin.com/in/dalbornoz-developer/" target="_blank">
+        <img src="in.png">
+     <br>
+       <span>Linkedin</span>
+      </a>
 
+      <a href="https://www.instagram.com/dalbornoz1" target="_blank">
+        <img src="igg2.png">
+        <br>
+       <span>Instagram</span>
+      </a>
 
-</div> 
+      <a href="https://api.whatsapp.com/send?phone=56933169603" target="_blank">
+        <img src="w4.png">
+        <br>
+       <span>WhatsApp</span>
+      </a>
 
+      <a href="https://github.com/dalbornoz-cl" target="_blank">
+       <img src="git.png">
+   <br>
+       <span>Git</span>
+      </a> 
 
+        <a href="https://github.com/dalbornoz-cl" target="_blank">
+       <img src="Logo_UTFSM.png">  
+       <br>
+       <span>Memoria USM</span>
+   
+      </a> 
 
-
+      <a href="https://github.com/dalbornoz-cl" target="_blank">
+       <img src="pdf.png">  
+       <br>
+       <span>Mi CV</span>
+   
+      </a>
+    </div>
+  </div>
+</div>
 </div>  
 
 
 
 
 
-<div class="dock">
-  <a class="dock-img utfsm" href="https://repositorio.usm.cl/entities/tesis/7b63e1e1-f2b9-40a1-864c-73fa390df53e" target="_blank" data-tooltip="Memoria USM">
-    <img src="Logo_UTFSM.png" alt="UTFSM">
-  </a>
 
-  <a class="dock-img me" href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/tmp/DOCUMENTOS/DOCUMENTACION_ACADEMICA.zip" data-tooltip="Descargar Certificados">
-    <img src="aca.png" alt="Diego">
-  </a>
 
-   <a class="dock-img me" href="https://www.instagram.com/dalbornoz1?igsh=MTV6MGIxaTluZjV1OA==" data-tooltip="@dalbornoz1">
-    <img src="igg2.png" alt="Diego">
-  </a>
 
- <a class="dock-img me" href="https://www.linkedin.com/in/dalbornoz-developer/" data-tooltip="LinkedIn">
-    <img src="in.png" alt="Diego">
-  </a>
-
- <a class="dock-img me" href="https://api.whatsapp.com/send?phone=56933169603&text=Hola%21%20Diego" data-tooltip="WhatsApp">
-    <img src="w4.png" alt="Diego">
-  </a> 
-
-   <a class="dock-img me" href="www.gmail.com" data-tooltip="Email">
-    <img src="gmail.png" alt="Diego">
-  </a>
-
-  <a class="github" href="https://github.com/dalbornoz-cl" data-tooltip="GitHub">
-    <i class="fab fa-github"></i>
-  </a>
-</div>
 
 
 
@@ -1138,17 +1499,42 @@ navToggle?.addEventListener("click",()=>{
 });
 </script> 
 
-<script>
-  const dock = document.querySelector(".dock");
-  
-  window.addEventListener("scroll", () => {
-    dock.classList.toggle("compact", window.scrollY > 40);
-  });
-  </script>
-  
-  
 
-    
+  
+  <script>
+const appsFab = document.getElementById("appsFab");
+const appsModal = document.getElementById("appsModal");
+
+appsFab.addEventListener("click", () => {
+  appsModal.classList.add("active");
+});
+
+appsModal.addEventListener("click", (e) => {
+  if(e.target === appsModal){
+    appsModal.classList.remove("active");
+  }
+});
+</script>
+
+
+    <script>
+const navbarV2 = document.getElementById("navbarV2");
+
+let lastScrollY = 0;
+
+window.addEventListener("scroll", () => {
+  const currentScroll = window.scrollY;
+
+  if(currentScroll > 40){
+    navbarV2.classList.add("compact");
+  }else{
+    navbarV2.classList.remove("compact");
+  }
+
+  lastScrollY = currentScroll;
+});
+</script>
+
     
 </body>
 
