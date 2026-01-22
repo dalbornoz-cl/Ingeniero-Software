@@ -2219,7 +2219,38 @@ window.addEventListener("scroll", () => {
   updateGlow();
 })();
 </script>
+<!-- MODAL CARRUSEL -->
+<div class="modal" id="modalPicture">
 
+  <button class="close" id="closeCarousel">✕</button>
+
+  <div class="carousel">
+    <button class="nav prev" id="prevBtn">❮</button>
+
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="pictureTrack">
+        <!-- 🔽 IMÁGENES AQUÍ 🔽 --> 
+        <img src="5c.jpeg" class="slide">
+         <img src="2c.jpg" class="slide">
+          <img src="4c.jpg" class="slide">
+           <img src="6c.jpg" class="slide">
+            <img src="5c.jpeg" class="slide">
+       
+    
+        <!-- 🔼 FIN IMÁGENES 🔼 -->
+      </div>
+    </div>
+
+    <button class="nav next" id="nextBtn">❯</button>
+  </div>
+
+  <!-- Dots iOS -->
+  <div class="dots" id="pictureDots"></div>
+
+  <!-- Vision Pro Glow -->
+  <div class="vision-glow" id="pictureGlow"></div>
+
+</div>
 
 </body>
 
