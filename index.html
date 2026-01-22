@@ -7,6 +7,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> 
 
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 
 <style>   
@@ -52,30 +54,74 @@
 
 
   /* BOTÓN INFERIOR IZQUIERDA */
-.liquid-btn-left{
-  position:fixed;
+/* BOTÓN ACRÍLICO CON BORDE FLÚOR */
+.liquid-btn-left {
+  position: relative;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.25);
+  overflow: visible;
 
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  background:rgba(255,255,255,.25);
-  backdrop-filter:blur(30px) saturate(180%);
-  -webkit-backdrop-filter:blur(30px) saturate(180%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  color:white;
-  cursor:pointer;
   box-shadow:
-    inset 0 2px 6px rgba(255,255,255,.5),
-    0 18px 40px rgba(0,0,0,.45);
-  transition:.3s ease;
-  z-index:9999;
+    0 10px 35px rgba(0,0,0,.45),
+    inset 0 1px 1px rgba(255,255,255,.3);
 }
 
+/* HALO FLÚOR */
+.liquid-btn-left::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    rgba(0,255,255,.75),
+    rgba(0,180,255,.9),
+    rgba(120,255,255,.8),
+    rgba(0,255,255,.75)
+  );
+
+  filter: blur(20px);
+  opacity: .85;
+  z-index: -1;
+
+  animation: fluorPulse 1s ease-in-out infinite;
+}
+
+/* REFLEJO INTERNO */
+.liquid-btn-left::after {
+  content: "";
+  position: absolute;
+  inset: 82px;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 22px rgba(234, 240, 234, 0.775),
+    inset 0 0 13px rgba(255, 255, 255, 0.669);
+  pointer-events: none;
+}
+
+/* ANIMACIÓN FLÚOR */
+@keyframes fluorPulse {
+  0% {
+    filter: blur(24px);
+    opacity: .0;
+  }
+  50% {
+    filter: blur(26px);
+    opacity: 10;
+  }
+  100% {
+    filter: blur(24px);
+    opacity: .0;
+  }
+}
+
+
 .liquid-btn-left:hover{
-  transform:scale(1.15) rotate(-6deg);
+  transform:scale(10.15) rotate(-3deg);
 }
 
 /* FONDO MODAL */
@@ -1285,23 +1331,530 @@ body {
 .apps-glass{
   transform-origin:center;
 }
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(24px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
 
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 82%;
+  max-width: 960px;
+  height: 540px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(28px) saturate(180%);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 35px 90px rgba(0,0,0,.45);
+  opacity: 0;
+  transform: scale(.95);
+  pointer-events: none;
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+
+/* SHOW */
+.modal.show,
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal.show {
+  transform: scale(1);
+}
+
+/* CLOSE */
+.close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255,255,255,.25);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+/* CAROUSEL */
+.carousel {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* SLIDES */
+.slide {
+  min-width: 100%;
+  object-fit: cover;
+  will-change: transform;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* NAV BUTTONS */
+.nav {
+  position: absolute;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.3);
+  backdrop-filter: blur(12px);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.prev { left: 18px; }
+.next { right: 18px; }
+
+/* DOTS iOS */
+.dots {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  transition: all .4s cubic-bezier(.4,0,.2,1);
+}
+
+.dot.active {
+  width: 22px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.9);
+}
+
+/* VISION PRO GLOW */
+.vision-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      600px circle at var(--x,50%) var(--y,50%),
+      rgba(255,255,255,.18),
+      transparent 45%
+    );
+  mix-blend-mode: screen;
+}
+.nav-center a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.spotify-glass {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+
+  padding: 10px 12px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+/* Hover sutil tipo iOS */
+.spotify-glass:hover {
+  transform: scale(1.03);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .spotify-glass iframe {
+    width: 360px;
+  }
+}
+
+
+/* Hover iOS feel */
+.spotify-glass:hover {
+  transform: translateX(-50%) scale(1.03);
+}
+
+/* Responsive mobile */
+@media (max-width: 480px) {
+  .spotify-glass iframe {
+    width: 360px;
+  }
+}
+/* NAVBAR GLASS */
+.glass-nav {
+  position: fixed;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  z-index: 9998;
+
+  width: 72px;
+  padding: 14px 10px;
+
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 22px;
+
+  box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+
+  transition: width .35s cubic-bezier(.4,0,.2,1);
+}
+
+/* Menu list */
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Links */
+.nav-list a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 44px;
+  border-radius: 14px;
+
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+
+  transition: background .3s ease;
+}
+
+.nav-list a:hover {
+  background: rgba(255,255,255,.2);
+}
+
+/* Toggle button (mobile) */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+/* EXPANDED STATE (mobile) */
+.glass-nav.open {
+  width: 220px;
+}
+
+.glass-nav.open .nav-list a {
+  justify-content: flex-start;
+  padding-left: 16px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .glass-nav {
+    top: 16px;
+    transform: none;
+    width: 56px;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+  }
+
+  .glass-nav.open .nav-list {
+    max-height: 400px;
+  }
+}
+
+/* ===== MOBILE ONLY ===== */
+@media (max-width: 768px) {
+
+  /* Ocultar navbar normal */
+  .glass-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) translateX(-20px) scale(.9);
+  }
+
+  /* Floating Acrylic Button */
+  .mobile-nav-fab {
+    position: fixed;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%) translateZ(0);
+
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+
+    border: 1px solid rgba(255,255,255,0.28);
+    color: white;
+    font-size: 22px;
+
+    box-shadow:
+      0 14px 35px rgba(0,0,0,0.45),
+      inset 0 1px 1px rgba(255,255,255,.25);
+
+    z-index: 9999;
+    cursor: pointer;
+
+    transition:
+      transform .35s cubic-bezier(.4,0,.2,1),
+      box-shadow .35s;
+  }
+
+  /* 3D Press */
+  .mobile-nav-fab:active {
+    transform: translateY(-50%) scale(.95) rotateX(12deg);
+    box-shadow: 0 8px 18px rgba(0,0,0,.5);
+  }
+
+  /* When menu open */
+  .glass-nav.mobile-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(72px) scale(1);
+  }
+
+  .glass-nav.mobile-open .nav-list {
+    max-height: 400px;
+  }
+}
+@media (max-width: 768px) {
+
+  /* FAB */
+  .mobile-nav-fab {
+    position: fixed;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(142, 184, 160, 0.912);
+    backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid rgba(117, 206, 194, 0.87);
+    box-shadow: 0 14px 40px rgba(149, 174, 172, 0.948);
+    z-index: 9999;
+    cursor: pointer;
+  }
+
+  /* Hamburger lines */
+  .fab-line {
+    position: absolute;
+    left: 50%;
+    width: 22px;
+    height: 2px;
+    background: white;
+    transition: .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  .fab-line:nth-child(1) { top: 22px; transform: translateX(-50%); }
+  .fab-line:nth-child(2) { top: 34px; transform: translateX(-50%); }
+
+  /* Morph ☰ → ✕ */
+  .mobile-nav-fab.active .fab-line:nth-child(1) {
+    transform: translateX(-50%) rotate(45deg) translateY(6px);
+  }
+  .mobile-nav-fab.active .fab-line:nth-child(2) {
+    transform: translateX(-50%) rotate(-45deg) translateY(-6px);
+  }
+
+  /* NAV PANEL */
+  .glass-nav {
+    position: fixed;
+    top: 50%;
+    left: 14px;
+    transform-origin: left center;
+    transform: translateY(-50%) scale(.3);
+    opacity: 0;
+    pointer-events: none;
+
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(30px) saturate(200%);
+    border-radius: 18px;
+    padding: 18px;
+    min-width: 200px;
+
+    box-shadow:
+      0 20px 60px rgba(0,0,0,.55),
+      inset 0 1px 1px rgba(255,255,255,.3);
+
+    transition:
+      transform .45s cubic-bezier(.16,1,.3,1),
+      opacity .25s;
+  }
+
+  .glass-nav.mobile-open {
+    transform: translateY(-50%) translateX(70px) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-list li {
+    margin: 14px 0;
+  }
+}
+@media (max-width: 768px) {
+
+  /* Halo luminoso */
+  .mobile-nav-fab::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: linear-gradient(
+      220deg,
+      rgb(253, 255, 249),
+      rgba(230, 217, 217, 0.897),
+      rgb(208, 230, 239)
+    );
+    filter: blur(18px);
+    opacity: .75;
+    z-index: -1;
+    animation: glowPulse 1s ease-in-out infinite;
+  }
+
+  /* Sutil capa interna */
+  .mobile-nav-fab::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 10px rgba(192, 213, 191, 0.979),
+      inset 0 0 2px rgba(255,255,255,.6);
+    pointer-events: none;
+  }
+
+  @keyframes glowPulse {
+    0%,100% {
+      opacity: .6;
+      filter: blur(16px);
+    }
+    50% {
+      opacity: .29;
+      filter: blur(22px);
+    }
+  }
+
+  /* Refuerzo cuando está activo */
+  .mobile-nav-fab.active::before {
+    opacity: 1;
+    filter: blur(26px);
+  }
+}
 
 </style> 
 
 </head>
-<body> 
-<nav class="navbar-glass" id="navbar">
-  <div class="nav-left"><div class="nav-toggle" id="navToggle">☰</div>
-  <ul class="nav-center">
-    <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/Certificaciones.pdf">🖼️</a></li>
+<body>  
+
+<nav class="glass-nav" id="glassNav">
+  <ul class="nav-list">
+     <li>
+  <a href="#" id="openCarouselLink">
+    <i class="fa-brands fa-instagram"></i>
+    Instagram
+  </a>
+</li>
     <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/Certificaciones.pdf">Certificaciones</a></li>
     <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/VerCurriculum.pdf">Mí CV</a></li>
     <li><a href="https://www.softechti.cl/">Softech.cl</a></li>
-    <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/DocAcademicosOnly.pdf">Resumen Academico</a></li>
+    <li><a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/AWS/Dalbornoz/DocAcademicosOnly.pdf">Docs.Academico</a></li>
   </ul>
 </nav>
 
+<button class="mobile-nav-fab" id="mobileNavFab" aria-label="Menú">
+  <span class="fab-line"></span>
+  <span class="fab-line"></span>
+</button>
+
+
+
+<!-- 
+<nav class="navbar-glass" id="navbar">
+  <div class="nav-left"><div class="nav-toggle" id="navToggle">☰</div>
+
+    
+ 
+
+  <ul class="nav-center">
+<li>
+  <a href="#" id="openCarouselLink">
+    <i class="fa-brands fa-instagram"></i>
+    
+  </a>
+</li>
+    <li><a href="/pages/index.html">Ver mí CV</a></li>
+    <li><a href="https://www.softechti.cl/">Softech.cl - MyPyme</a></li>
+    <li><a href="/page2/index.html">Mis Certificaciones</a></li>
+  </ul>
+ 
+
+  
+
+ 
+</nav>
+Overlay -->
 
 
 <div class="container"> 
@@ -1332,7 +1885,7 @@ body {
     <div class="liquid-btn-left" id="appsFab"> 
       
         <br>
-  <img src="aca.png" alt="Diego" width="80" >  
+  <img src="aca.png" alt="Diego" width="90" >  
 
   <h1>📲</h1>
 </div>  
@@ -1340,6 +1893,43 @@ body {
  </div> 
 
 </div>  
+
+
+<div class="overlay" id="overlayPicture"></div>
+
+<!-- MODAL CARRUSEL -->
+<div class="modal" id="modalPicture">
+
+  <button class="close" id="closeCarousel">✕</button>
+
+  <div class="carousel">
+    <button class="nav prev" id="prevBtn">❮</button>
+
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="pictureTrack">
+        <!-- 🔽 IMÁGENES AQUÍ 🔽 --> 
+         <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DSKPhxHkcrw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DSKPhxHkcrw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Ver esta publicación en Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DSKPhxHkcrw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Una publicación compartida por Diego Albornoz 🪄 (@dalbornoz1)</a></p></div></blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CJpDD5_jkrY/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/CJpDD5_jkrY/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Ver esta publicación en Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/CJpDD5_jkrY/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Una publicación compartida por Diego Albornoz 🪄 (@dalbornoz1)</a></p></div></blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DSGEtC5kb5z/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/DSGEtC5kb5z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Ver esta publicación en Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/DSGEtC5kb5z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Una publicación compartida por Diego Albornoz 🪄 (@dalbornoz1)</a></p></div></blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+    
+        <!-- 🔼 FIN IMÁGENES 🔼 -->
+      </div>
+    </div>
+
+    <button class="nav next" id="nextBtn">❯</button>
+  </div>
+
+  <!-- Dots iOS -->
+  <div class="dots" id="pictureDots"></div>
+
+  <!-- Vision Pro Glow -->
+  <div class="vision-glow" id="pictureGlow"></div>
+
+</div>
+
 <!-- MODAL APPS -->
 <div class="apps-modal" id="appsModal">
   <div class="apps-glass">
@@ -1368,17 +1958,17 @@ body {
        <span>Git</span>
       </a> 
 
-        <a href="https://repositorio.usm.cl/entities/tesis/7b63e1e1-f2b9-40a1-864c-73fa390df53e" target="_blank">
+        <a href="https://github.com/dalbornoz-cl" target="_blank">
        <img src="Logo_UTFSM.png">  
        <br>
        <span>Memoria USM</span>
    
       </a> 
 
-      <a href="https://s3.us-east-2.amazonaws.com/neox.medios.publicos/tmp/DOCUMENTOS/DOCUMENTACION_ACADEMICA.zip" target="_blank">
+      <a href="https://github.com/dalbornoz-cl" target="_blank">
        <img src="pdf.png">  
        <br>
-       <span>Descargar.zip</span>
+       <span>Mi CV</span>
    
       </a>
     </div>
@@ -1527,7 +2117,105 @@ window.addEventListener("scroll", () => {
 });
 </script>
 
-    
+    <!-- MINI SPOTIFY PLAYER -->
+<div class="spotify-glass">
+  <iframe
+    style="border-radius:12px"
+    src="https://open.spotify.com/embed/track/2HhzV3FY4eZGueF0KpXZUo?utm_source=generator"
+    width="300"
+    height="80"
+    frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy">
+  </iframe>
+</div>  
+
+
+
+
+<script>
+(() => {
+  const spotifyPlayer = document.querySelector(".spotify-glass");
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener("scroll", () => {
+    const currentY = window.scrollY;
+
+    if (currentY > lastScrollY) {
+      spotifyPlayer.style.opacity = "0";
+      spotifyPlayer.style.transform =
+        "translateX(-50%) translateY(20px)";
+    } else {
+      spotifyPlayer.style.opacity = "1";
+      spotifyPlayer.style.transform =
+        "translateX(-50%)";
+    }
+
+    lastScrollY = currentY;
+  });
+})();
+</script>
+
+<script>
+(() => {
+  const nav = document.getElementById("glassNav");
+  const toggle = document.getElementById("navToggle");
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+})();
+</script>
+
+
+
+<script>
+(() => {
+  const fab = document.getElementById("mobileNavFab");
+  const nav = document.getElementById("glassNav");
+
+  /* HAPTIC */
+  const haptic = () => {
+    if (navigator.vibrate) navigator.vibrate(18);
+  };
+
+  fab.addEventListener("click", () => {
+    nav.classList.toggle("mobile-open");
+    fab.classList.toggle("active");
+    haptic();
+  });
+
+  /* SNAP MAGNÉTICO AL SCROLL */
+  let lastScroll = window.scrollY;
+  window.addEventListener("scroll", () => {
+    const current = window.scrollY;
+    const delta = current - lastScroll;
+
+    if (Math.abs(delta) > 12) {
+      fab.style.transform =
+        `translateY(calc(-50% + ${delta > 0 ? 12 : -12}px))`;
+    } else {
+      fab.style.transform = "translateY(-50%)";
+    }
+
+    lastScroll = current;
+  });
+
+  /* GLOW DINÁMICO SEGÚN FONDO */
+  const updateGlow = () => {
+    const bg = getComputedStyle(document.body).backgroundColor;
+    const isDark = bg.match(/\d+/g)?.slice(0,3).reduce((a,b)=>a+b) < 380;
+
+    fab.style.boxShadow = isDark
+      ? "0 0 30px rgba(0,180,255,.35)"
+      : "0 0 30px rgba(255,255,255,.45)";
+  };
+
+  updateGlow();
+})();
+</script>
+
+
 </body>
 
 
